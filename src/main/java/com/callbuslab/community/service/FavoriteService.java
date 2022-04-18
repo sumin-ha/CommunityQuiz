@@ -25,10 +25,10 @@ public class FavoriteService {
         if(favorite == null) {
             Favorite registerEntity = Favorite.builder().boardId(boardId).memberId(memberId).build();
             favoriteRepository.save(registerEntity);
-            return 1;
+            return ResultCode.SUCCESS.getValue();
         } else {
             // 존재하면 (좋아요는 1계정 1글 1회제한)에 따라 추가 등록하지 않음.
-            return 0;
+            return ResultCode.ERROR.getValue();
         }
     }
 }
