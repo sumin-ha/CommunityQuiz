@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @Getter
 public class Comment extends BaseEntity {
 
-    // 댓글
-
     // 댓글의 고유 id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +31,7 @@ public class Comment extends BaseEntity {
 
     // 댓글의 내용
     @Column(nullable = false)
-    private Long content;
+    private String content;
 
     // 댓글의 삭제시간
     @Column
@@ -44,15 +42,21 @@ public class Comment extends BaseEntity {
     private String delAble;
 
     @Builder
-    public Comment(Long commentWriterId, Long commentBoardId, Long content, String delAble) {
+    public Comment(Long commentWriterId, Long commentBoardId, String content, String delAble) {
         this.commentWriterId = commentWriterId;
         this.commentBoardId = commentBoardId;
         this.content = content;
         this.delAble = delAble;
     }
 
-    // update, delete용 id세팅
+    // update, delete용 id삽입 setter
     public void setUpdateId(Long id) {
         this.id = id;
     }
+
+    // delete용 삭제시간 삽입
+    public void setDeleteDate(LocalDateTime deleteDate) {
+        this.deleteDate = deleteDate;
+    }
+
 }
