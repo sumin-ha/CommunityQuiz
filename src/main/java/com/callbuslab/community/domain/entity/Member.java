@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 public class Member extends BaseEntity {
-    // 커뮤니티 회원 저장 엔티티
 
     // 고유 id
     @Id

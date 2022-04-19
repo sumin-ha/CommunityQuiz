@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 public class Board extends BaseEntity {
-    // 글은 작성 수정 삭제가 가능하다.
-    // 글은 좋아요수를 가지고 있다.
 
     // 글의 고유 id
     @Id
@@ -33,11 +31,11 @@ public class Board extends BaseEntity {
 
     // 글 작성자
     @Column(nullable = false)
-    private String writer;
+    private Long writerId;
 
     // 글의 좋아요 수
     @Column
-    private String favoriteCount;
+    private Integer favoriteCount;
 
     // 글의 삭제시간
     @Column
@@ -48,10 +46,10 @@ public class Board extends BaseEntity {
     private String delAble;
 
     @Builder
-    public Board(String title, String content, String writer, String favoriteCount, String delAble) {
+    public Board(String title, String content, Long writerId, Integer favoriteCount, String delAble) {
         this.title = title;
         this.content = content;
-        this.writer = writer;
+        this.writerId = writerId;
         this.favoriteCount = favoriteCount;
         this.delAble = delAble;
     }
@@ -59,5 +57,15 @@ public class Board extends BaseEntity {
     // update, delete용 id세팅
     public void setUpdateId(Long id) {
         this.id = id;
+    }
+
+    // delete용 삭제시간 삽입
+    public void setDeleteDate(LocalDateTime deleteDate) {
+        this.deleteDate = deleteDate;
+    }
+
+    // update, delete용 id세팅
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
     }
 }

@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardWriteDto {
 
-    private String id;
+    // 글 제목
     private String title;
+    // 글 내용
     private String content;
 }

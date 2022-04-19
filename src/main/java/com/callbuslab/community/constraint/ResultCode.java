@@ -1,4 +1,4 @@
-package com.callbuslab.community.service;
+package com.callbuslab.community.constraint;
 
 public enum ResultCode {
 
