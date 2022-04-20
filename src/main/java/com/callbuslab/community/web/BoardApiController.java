@@ -2,8 +2,8 @@ package com.callbuslab.community.web;
 
 import com.callbuslab.community.constraint.ResponseMessage;
 import com.callbuslab.community.constraint.ResultObject;
-import com.callbuslab.community.domain.entity.Board;
 import com.callbuslab.community.service.BoardService;
+import com.callbuslab.community.service.MemberService;
 import com.callbuslab.community.web.dto.BoardDto;
 import com.callbuslab.community.web.dto.BoardListDto;
 import com.callbuslab.community.web.dto.BoardWriteDto;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,14 +25,17 @@ import java.util.List;
 public class BoardApiController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
 
     // 글 목록 호출
-    // TODO 유저 id 습득 부분 작성 필요
     @GetMapping("/")
-    public ResponseEntity boardList(Model model) {
+    public ResponseEntity boardList(@RequestHeader String authorization) {
+
+        // 현재 로그인 중인 멤버 ID 습득
+        Long memberId = memberService.getMemberId(authorization);
 
         // 습득 요청
-        List<BoardListDto> list = boardService.getBoardList(0L);
+        List<BoardListDto> list = boardService.getBoardList(memberId);
 
         // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
@@ -46,12 +48,14 @@ public class BoardApiController {
     }
 
     // 글 본문 호출
-    // TODO 유저 id 습득 부분 작성 필요
     @GetMapping("/{boardId}")
-    public ResponseEntity boardDetail(Model model, @PathVariable Long boardId) {
+    public ResponseEntity boardDetail(@RequestHeader String authorization, @PathVariable Long boardId) {
+
+        // 현재 로그인 중인 멤버 ID 습득
+        Long memberId = memberService.getMemberId(authorization);
 
         // 습득 요청
-        BoardDto boardDto = boardService.getBoard(boardId,0L);
+        BoardDto boardDto = boardService.getBoard(boardId, memberId);
 
         // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
@@ -64,11 +68,24 @@ public class BoardApiController {
     }
 
     // 글 등록
-    // TODO 유저 id 습득 부분 작성 필요
     @PostMapping("/")
-    public ResponseEntity boardRegister(Model model, @RequestBody BoardWriteDto dto) {
+    public ResponseEntity boardRegister(@RequestHeader String authorization, @RequestBody BoardWriteDto dto) {
 
-        String message = boardService.registerBoard (dto, 0L);
+        // 현재 로그인 중인 멤버 ID 습득
+        Long memberId = memberService.getMemberId(authorization);
+
+        // 반환용 메세지
+        String message = "";
+
+        // 등록 처리는 임차인, 임대인, 공인중개사만 가능함.
+        // 습득한 memberId가 Long의 MIN_VALUE라면 외부인 혹은 닉네임 미등록자이므로 처리 불가
+        if(memberId == Long.MIN_VALUE) {
+            // 에러 메세지
+            message = ResponseMessage.memberNotFoundError;
+        } else {
+            // 등록 처리
+            message = boardService.registerBoard (dto, memberId);
+        }
 
         // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
@@ -78,11 +95,26 @@ public class BoardApiController {
     }
 
     // 글 수정
-    // TODO 유저 id 습득 부분 작성 필요
     @PutMapping("/{boardId}")
-    public ResponseEntity boardUpdate(Model model, @PathVariable Long boardId, @RequestBody BoardWriteDto dto) {
+    public ResponseEntity boardUpdate(@RequestHeader String authorization,
+                                      @PathVariable Long boardId,
+                                      @RequestBody BoardWriteDto dto) {
 
-        String message = boardService.updateBoard(dto, boardId, 0L);
+        // 현재 로그인 중인 멤버 ID 습득
+        Long memberId = memberService.getMemberId(authorization);
+
+        // 반환용 메세지
+        String message = "";
+
+        // 수정 처리는 임차인, 임대인, 공인중개사만 가능함.
+        // 습득한 memberId가 Long의 MIN_VALUE라면 외부인 혹은 닉네임 미등록자이므로 처리 불가
+        if(memberId == Long.MIN_VALUE) {
+            // 에러 메세지
+            message = ResponseMessage.memberNotFoundError;
+        } else {
+            // 수정 처리
+            message = boardService.updateBoard(dto, boardId, memberId);
+        }
 
         // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
@@ -92,11 +124,24 @@ public class BoardApiController {
     }
 
     // 글 삭제
-    // TODO 유저 id 습득 부분 작성 필요
     @DeleteMapping("/{boardId}")
-    public ResponseEntity boardDelete(Model model, @PathVariable Long boardId) {
+    public ResponseEntity boardDelete(@RequestHeader String authorization, @PathVariable Long boardId) {
 
-        String message = boardService.deleteBoard(boardId, 0L);
+        // 현재 로그인 중인 멤버 ID 습득
+        Long memberId = memberService.getMemberId(authorization);
+
+        // 반환용 메세지
+        String message = "";
+
+        // 삭제 처리는 임차인, 임대인, 공인중개사만 가능함.
+        // 습득한 memberId가 Long의 MIN_VALUE라면 외부인 혹은 닉네임 미등록자이므로 처리 불가
+        if(memberId == Long.MIN_VALUE) {
+            // 에러 메세지
+            message = ResponseMessage.memberNotFoundError;
+        } else {
+            // 삭제 처리
+            message = boardService.deleteBoard(boardId, memberId);
+        }
 
         // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
