@@ -1,5 +1,6 @@
 package com.callbuslab.community.domain.entity;
 
+import com.callbuslab.community.constraint.DeleteFlag;
 import com.callbuslab.community.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,18 +55,20 @@ public class Board extends BaseEntity {
         this.delAble = delAble;
     }
 
-    // update, delete용 id세팅
-    public void setUpdateId(Long id) {
-        this.id = id;
+    // 수정 할 컨텐츠 세팅
+    public void setUpdateContent(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
-    // delete용 삭제시간 삽입
-    public void setDeleteDate(LocalDateTime deleteDate) {
+    // 삭제용 컨텐츠 세팅
+    public void setDeleteContent(LocalDateTime deleteDate) {
         this.deleteDate = deleteDate;
+        this.delAble = DeleteFlag.DELETE.getDeleteFlag();
     }
 
-    // update, delete용 id세팅
-    public void setFavoriteCount(int favoriteCount) {
-        this.favoriteCount = favoriteCount;
+    // 좋아요 용 카운트 세팅
+    public void incrementFavoriteCount() {
+        this.favoriteCount++;
     }
 }
