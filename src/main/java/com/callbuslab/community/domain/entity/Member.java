@@ -33,10 +33,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String accountId;
 
-    // 탈퇴 시간
-    @Column
-    private LocalDateTime quitDate;
-
     // 탈퇴여부
     @Column
     private String quit;
