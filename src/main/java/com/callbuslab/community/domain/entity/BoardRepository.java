@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("select p from Board p order by p.id desc")
+    @Query("select p from Board p where p.delAble <> 0 order by p.id desc")
     List<Board> findAllDesc();
 }

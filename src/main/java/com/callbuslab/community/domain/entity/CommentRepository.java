@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("select p from Comment p where p.commentBoardId = :commentBoardId")
+    @Query("select p from Comment p where p.commentBoardId = :commentBoardId and p.delAble <> 0")
     List<Comment> findByBoardId(@Param(value = "commentBoardId")Long commentBoardId);
 }
