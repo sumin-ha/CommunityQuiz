@@ -29,7 +29,7 @@ public class BoardApiController {
 
     // 글 목록 호출
     @GetMapping("/")
-    public ResponseEntity boardList(@RequestHeader String authorization) {
+    public ResponseEntity boardList(@RequestHeader(required = false) String authorization) {
 
         // 현재 로그인 중인 멤버 ID 습득
         Long memberId = memberService.getMemberId(authorization);
@@ -49,7 +49,8 @@ public class BoardApiController {
 
     // 글 본문 호출
     @GetMapping("/{boardId}")
-    public ResponseEntity boardDetail(@RequestHeader String authorization, @PathVariable Long boardId) {
+    public ResponseEntity boardDetail(@RequestHeader(required = false) String authorization,
+                                      @PathVariable Long boardId) {
 
         // 현재 로그인 중인 멤버 ID 습득
         Long memberId = memberService.getMemberId(authorization);
