@@ -1,4 +1,4 @@
-package com.callbuslab.community.web.dto;
+package com.callbuslab.community.web;
 
 import com.callbuslab.community.constraint.ResultObject;
 import com.callbuslab.community.service.MemberService;
