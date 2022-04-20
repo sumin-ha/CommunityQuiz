@@ -1,5 +1,8 @@
 package com.callbuslab.community.constraint;
 
+/**
+ * 계정 타입 정의
+ */
 public enum MemberCategory {
 
     LESSOR("임대인"),

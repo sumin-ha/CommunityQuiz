@@ -1,8 +1,11 @@
 package com.callbuslab.community.constraint;
 
+/**
+ * API 응답 메세지 정의
+ */
 public class ResponseMessage {
     public static final String successMessage = "요청 처리 완료";
-    public static final String favoriteRegisterFail = "댓글 등록 실패";
+    public static final String favoriteRegisterFail = "이미 좋아요 등록이 되어있습니다.";
     public static final String boardRegisterFail = "글 등록 실패";
     public static final String boardUpdateFail = "글 수정 실패";
     public static final String boardDeleteFail = "글 삭제 실패";
