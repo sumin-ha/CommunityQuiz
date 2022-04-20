@@ -24,8 +24,10 @@ public class CommentApiController {
     private final MemberService memberService;
 
     // 댓글 쓰기
-    @PostMapping("/")
-    public ResponseEntity commentRegister(@RequestHeader String authorization, @RequestBody CommentWriteDto dto) {
+    @PostMapping("/{boardId}")
+    public ResponseEntity commentRegister(@RequestHeader String authorization,
+                                          @PathVariable Long boardId,
+                                          @RequestBody CommentWriteDto dto) {
 
         // 현재 로그인 중인 멤버 ID 습득
         Long memberId = memberService.getMemberId(authorization);
@@ -40,7 +42,7 @@ public class CommentApiController {
             message = ResponseMessage.memberNotFoundError;
         } else {
             // 등록 처리
-            message = commentService.registerComment(dto, memberId);
+            message = commentService.registerComment(boardId, dto, memberId);
         }
 
         // 반환 객체 생성
