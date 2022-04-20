@@ -1,10 +1,15 @@
 package com.callbuslab.community.web;
 
+import com.callbuslab.community.constraint.ResponseMessage;
+import com.callbuslab.community.constraint.ResultObject;
+import com.callbuslab.community.domain.entity.Board;
 import com.callbuslab.community.service.BoardService;
+import com.callbuslab.community.web.dto.BoardDto;
 import com.callbuslab.community.web.dto.BoardListDto;
 import com.callbuslab.community.web.dto.BoardWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -26,38 +31,77 @@ public class BoardApiController {
     // TODO 유저 id 습득 부분 작성 필요
     @GetMapping("/")
     public ResponseEntity boardList(Model model) {
+
+        // 습득 요청
         List<BoardListDto> list = boardService.getBoardList(0L);
+
+        // 반환 객체 생성
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.ok().headers(headers).body(list);
+        ResultObject resultObject = ResultObject.builder().status(HttpStatus.OK)
+                .message(ResponseMessage.successMessage)
+                .data(list)
+                .build();
+        return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
     // 글 본문 호출
     // TODO 유저 id 습득 부분 작성 필요
     @GetMapping("/{boardId}")
     public ResponseEntity boardDetail(Model model, @PathVariable Long boardId) {
-        model.addAttribute("detail", boardService.getBoard(boardId,0L));
-        return null;
+
+        // 습득 요청
+        BoardDto boardDto = boardService.getBoard(boardId,0L);
+
+        // 반환 객체 생성
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResultObject resultObject = ResultObject.builder().status(HttpStatus.OK)
+                .message(ResponseMessage.successMessage)
+                .data(boardDto)
+                .build();
+        return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
     // 글 등록
     // TODO 유저 id 습득 부분 작성 필요
     @PostMapping("/")
-    public int boardRegister(Model model, @RequestBody BoardWriteDto dto) {
-        return boardService.registerBoard(dto, 0L);
+    public ResponseEntity boardRegister(Model model, @RequestBody BoardWriteDto dto) {
+
+        String message = boardService.registerBoard (dto, 0L);
+
+        // 반환 객체 생성
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResultObject resultObject = ResultObject.builder().status(HttpStatus.OK).message(message).build();
+        return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
     // 글 수정
     // TODO 유저 id 습득 부분 작성 필요
     @PutMapping("/{boardId}")
-    public int boardUpdate(Model model, @PathVariable Long boardId, @RequestBody BoardWriteDto dto) {
-        return boardService.updateBoard(dto, boardId, 0L);
+    public ResponseEntity boardUpdate(Model model, @PathVariable Long boardId, @RequestBody BoardWriteDto dto) {
+
+        String message = boardService.updateBoard(dto, boardId, 0L);
+
+        // 반환 객체 생성
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResultObject resultObject = ResultObject.builder().status(HttpStatus.OK).message(message).build();
+        return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
     // 글 삭제
     // TODO 유저 id 습득 부분 작성 필요
     @DeleteMapping("/{boardId}")
-    public int boardDelete(Model model, @PathVariable Long boardId) {
-        return boardService.deleteBoard(boardId, 0L);
+    public ResponseEntity boardDelete(Model model, @PathVariable Long boardId) {
+
+        String message = boardService.deleteBoard(boardId, 0L);
+
+        // 반환 객체 생성
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResultObject resultObject = ResultObject.builder().status(HttpStatus.OK).message(message).build();
+        return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 }

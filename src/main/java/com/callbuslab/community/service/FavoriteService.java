@@ -1,5 +1,7 @@
 package com.callbuslab.community.service;
 
+import com.callbuslab.community.constraint.ResponseMessage;
+import com.callbuslab.community.constraint.ResultCode;
 import com.callbuslab.community.domain.entity.Board;
 import com.callbuslab.community.domain.entity.BoardRepository;
 import com.callbuslab.community.domain.entity.Favorite;
@@ -18,7 +20,7 @@ public class FavoriteService {
     private final BoardRepository boardRepository;
 
     // 좋아요 누르기
-    public int enableFavorite(Long boardId, Long memberId) {
+    public String enableFavorite(Long boardId, Long memberId) {
 
         // 좋아요 눌렀는지 확인
         Favorite favorite = favoriteRepository.findByBoardIdAndMemberId(boardId, memberId);
@@ -36,10 +38,10 @@ public class FavoriteService {
             board.setFavoriteCount(count+1);
             boardRepository.save(board);
 
-            return ResultCode.SUCCESS.getValue();
+            return ResponseMessage.successMessage;
         } else {
             // 존재하면 (좋아요는 1계정 1글 1회제한)에 따라 추가 등록하지 않음.
-            return ResultCode.ERROR.getValue();
+            return ResponseMessage.favoriteRegisterFail;
         }
     }
 }

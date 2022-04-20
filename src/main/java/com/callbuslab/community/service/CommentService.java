@@ -1,5 +1,7 @@
 package com.callbuslab.community.service;
 
+import com.callbuslab.community.constraint.ResponseMessage;
+import com.callbuslab.community.constraint.ResultCode;
 import com.callbuslab.community.domain.entity.Comment;
 import com.callbuslab.community.domain.entity.CommentRepository;
 import com.callbuslab.community.web.dto.CommentWriteDto;
@@ -18,11 +20,11 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     // 댓글 등록
-    public int registerComment(CommentWriteDto dto, Long userId) {
+    public String registerComment(CommentWriteDto dto, Long memberId) {
 
         // 댓글 등록용 객체생성
         Comment comment = Comment.builder().commentBoardId(Long.parseLong(dto.getBoardId()))
-                .commentWriterId(userId)
+                .commentWriterId(memberId)
                 .content(dto.getContent())
                 .delAble("1")
                 .build();
@@ -32,52 +34,52 @@ public class CommentService {
 
         // 결과 반환
         if(resultEntity != null) {
-            return ResultCode.SUCCESS.getValue();
+            return ResponseMessage.successMessage;
         } else {
-            return ResultCode.ERROR.getValue();
+            return ResponseMessage.commentRegisterFail;
         }
     }
 
     // 댓글 수정
-    public int updateComment(CommentWriteDto dto, Long userId) {
+    public String updateComment(CommentWriteDto dto, Long commentId, Long memberId) {
 
         // 댓글 등록 여부 확인
-        Comment checkEntity = commentRepository.getById(Long.parseLong(dto.getId()));
+        Comment checkEntity = commentRepository.getById(commentId);
 
         // 댓글 id로 습득이 되지 않거나, 해당 유저가 쓴 댓글이 아닐 경우 에러
-        if(checkEntity == null || checkEntity.getCommentWriterId() != userId) {
-            return ResultCode.ERROR.getValue();
+        if(checkEntity == null || checkEntity.getCommentWriterId() != memberId) {
+            return ResponseMessage.authError;
         }
 
         // 댓글 수정용 객체생성
         Comment comment = Comment.builder().content(dto.getContent()).build();
-        comment.setUpdateId(Long.parseLong(dto.getId()));
+        comment.setUpdateId(commentId);
 
         // 수정 등록
         Comment resultEntity = commentRepository.save(comment);
 
         // 결과 반환
         if(resultEntity != null) {
-            return ResultCode.SUCCESS.getValue();
+            return ResponseMessage.successMessage;
         } else {
-            return ResultCode.ERROR.getValue();
+            return ResponseMessage.commentUpdateFail;
         }
     }
 
     // 댓글 삭제
-    public int deleteComment(CommentWriteDto dto, Long userId) {
+    public String deleteComment(Long commentId, Long memberId) {
 
         // 댓글 등록 여부 확인
-        Comment checkEntity = commentRepository.getById(Long.parseLong(dto.getId()));
+        Comment checkEntity = commentRepository.getById(commentId);
 
         // 댓글 id로 습득이 되지 않거나, 해당 유저가 쓴 댓글이 아닐 경우 에러
-        if(checkEntity == null || checkEntity.getCommentWriterId() != userId) {
-            return ResultCode.ERROR.getValue();
+        if(checkEntity == null || checkEntity.getCommentWriterId() != memberId) {
+            return ResponseMessage.authError;
         }
 
         // 댓글 삭제용 객체생성
         Comment comment = Comment.builder().delAble("0").build();
-        comment.setUpdateId(Long.parseLong(dto.getId()));
+        comment.setUpdateId(commentId);
         comment.setDeleteDate(LocalDateTime.now());
 
         // 삭제 등록
@@ -86,9 +88,9 @@ public class CommentService {
 
         // 결과 반환
         if(resultEntity != null) {
-            return ResultCode.SUCCESS.getValue();
+            return ResponseMessage.successMessage;
         } else {
-            return ResultCode.ERROR.getValue();
+            return ResponseMessage.commentDeleteFail;
         }
     }
 }

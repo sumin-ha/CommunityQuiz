@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentWriteDto {
 
-    // 댓글 고유 id (수정용)
-    private String id;
     // 글 id
     private String boardId;
     // 댓글 내용
