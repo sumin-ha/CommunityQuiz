@@ -1,11 +1,15 @@
 package com.callbuslab.community.constraint;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
  * Response 에서 사용하는 객체 클래스
  */
+@Getter
+@NoArgsConstructor
 public class ResultObject {
 
     private HttpStatus status;

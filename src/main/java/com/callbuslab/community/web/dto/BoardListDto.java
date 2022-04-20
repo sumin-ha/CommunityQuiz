@@ -1,10 +1,14 @@
 package com.callbuslab.community.web.dto;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 글 목록용 DTO
  */
+@Getter
+@NoArgsConstructor
 public class BoardListDto {
 
     // 글 고유 id
