@@ -1,7 +1,7 @@
 package com.callbuslab.community.service;
 
+import com.callbuslab.community.constraint.DeleteFlag;
 import com.callbuslab.community.constraint.ResponseMessage;
-import com.callbuslab.community.constraint.ResultCode;
 import com.callbuslab.community.domain.entity.*;
 import com.callbuslab.community.web.dto.BoardCommentDto;
 import com.callbuslab.community.web.dto.BoardDto;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,12 +34,13 @@ public class BoardService {
 
         // 등록된 게시글 리스트 습득
         List<Board> boardList = boardRepository.findAllDesc();
+        System.out.println("1 :" + boardList.size());
         // 좋아요 여부를 확인하기 위한 좋아요 리스트 획득
         List<Long> favoriteList = favoriteRepository.findByMemberId(memberId)
                 .stream()
                 .map(Favorite::getBoardId)
                 .collect(Collectors.toList());
-
+        System.out.println("2 :" + favoriteList.size());
         // 화면에 표시할 글 목록 리스트 생성
         List<BoardListDto> resultList = new ArrayList<>();
         for(Board board : boardList) {
@@ -59,6 +61,7 @@ public class BoardService {
                     .build();
             resultList.add(boardListDto);
         }
+        System.out.println("3 :" + resultList.size());
         return resultList;
     }
 
@@ -101,9 +104,9 @@ public class BoardService {
         BoardDto boardDto = BoardDto.builder().id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .createdDate(board.getCreatedDate())
-                .modifiedDate(board.getModifiedDate())
-                .deleteDate(board.getDeleteDate())
+                .createdDate(LocalDateTimeToString(board.getCreatedDate()))
+                .modifiedDate(LocalDateTimeToString(board.getModifiedDate()))
+                .deleteDate(LocalDateTimeToString(board.getDeleteDate()))
                 .favoriteCount(board.getFavoriteCount())
                 .writer(writer)
                 .favoriteFlag(favoriteFlag)
@@ -121,7 +124,7 @@ public class BoardService {
                 .content(dto.getContent())
                 .writerId(memberId)
                 .favoriteCount(0)
-                .delAble("1")
+                .delAble(DeleteFlag.NOT_DELETE.getDeleteFlag())
                 .build();
 
         Board resultEntity = boardRepository.save(board);
@@ -138,21 +141,18 @@ public class BoardService {
     public String updateBoard(BoardWriteDto dto, Long boardId, Long memberId) {
 
         // 글 등록 여부 확인
-        Board checkEntity = boardRepository.getById(boardId);
+        Board targetEntity = boardRepository.getById(boardId);
 
         // 글 id로 습득이 되지 않거나, 해당 유저가 쓴 글이 아닐 경우 에러
-        if(checkEntity == null || checkEntity.getWriterId() != memberId) {
+        if(targetEntity == null || targetEntity.getWriterId() != memberId) {
             return ResponseMessage.authError;
         }
 
-        // 글 수정용 객체 생성
-        Board board = Board.builder().title(dto.getTitle())
-                .content(dto.getContent())
-                .build();
-        board.setUpdateId(boardId);
+        // 수정 대상 데이터 세팅
+        targetEntity.setUpdateContent(dto.getTitle(), dto.getContent());
 
         // 수정 등록
-        Board resultEntity = boardRepository.save(board);
+        Board resultEntity = boardRepository.save(targetEntity);
 
         // 결과 반환
         if(resultEntity != null) {
@@ -166,28 +166,34 @@ public class BoardService {
     public String deleteBoard(Long id, Long memberId) {
 
         // 글 등록 여부 확인
-        Board checkEntity = boardRepository.getById(id);
+        Board targetEntity = boardRepository.getById(id);
 
         // 글 id로 습득이 되지 않거나, 해당 유저가 쓴 글이 아닐 경우 에러
-        if(checkEntity == null || checkEntity.getWriterId() != memberId) {
+        if(targetEntity == null || targetEntity.getWriterId() != memberId) {
             return ResponseMessage.authError;
         }
 
-        // 글 수정용 객체 생성
-        Board board = Board.builder().delAble("0")
-                .build();
-        board.setUpdateId(id);
-        board.setDeleteDate(LocalDateTime.now());
+        // 글 삭제용 파라메터 세팅
+        targetEntity.setDeleteContent(LocalDateTime.now());
 
         // 삭제 등록
         // 논리 삭제를 하기때문에, 삭제여부와 삭제시간을 업데이트
-        Board resultEntity = boardRepository.save(board);
+        Board resultEntity = boardRepository.save(targetEntity);
 
         // 결과 반환
         if(resultEntity != null) {
             return ResponseMessage.successMessage;
         } else {
             return ResponseMessage.boardDeleteFail;
+        }
+    }
+
+    // LocalDateTime 형식을 String으로 변환
+    private String LocalDateTimeToString(LocalDateTime time) {
+        if(time == null) {
+            return null;
+        } else {
+            return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }
 }
