@@ -94,7 +94,7 @@ public class BoardApiController {
     }
 
     /**
-     * 게시글 등록
+     * 게시글 등록 API
      *
      * <p>
      *    게시글 등록하는 API<br>
@@ -132,7 +132,7 @@ public class BoardApiController {
     }
 
     /**
-     * 게시글 수정
+     * 게시글 수정 API
      *
      * <p>
      *    게시글 수정하는 API<br>
@@ -173,7 +173,7 @@ public class BoardApiController {
     }
 
     /**
-     * 게시글 삭제
+     * 게시글 삭제 API
      *
      * <p>
      *    게시글 삭제하는 API<br>

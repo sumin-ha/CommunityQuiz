@@ -26,7 +26,7 @@ public class CommentApiController {
     private final MemberService memberService;
 
     /**
-     * 댓글 등록
+     * 댓글 등록 API
      *
      * <p>
      *    댓글 등록하는 API<br>
@@ -67,7 +67,7 @@ public class CommentApiController {
     }
 
     /**
-     * 댓글 수정
+     * 댓글 수정 API
      *
      * <p>
      *    댓글 수정하는 API<br>
@@ -108,7 +108,7 @@ public class CommentApiController {
     }
 
     /**
-     * 댓글 삭제
+     * 댓글 삭제 API
      *
      * <p>
      *    댓글 삭제하는 API<br>
