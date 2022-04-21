@@ -9,6 +9,7 @@ import com.callbuslab.community.web.dto.BoardListDto;
 import com.callbuslab.community.web.dto.BoardWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -152,6 +153,7 @@ public class BoardService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String registerBoard(BoardWriteDto dto, Long memberId) {
 
         Board board = Board.builder().title(dto.getTitle())
@@ -183,6 +185,7 @@ public class BoardService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String updateBoard(BoardWriteDto dto, Long boardId, Long memberId) {
 
         // 글 등록 여부 확인
@@ -219,6 +222,7 @@ public class BoardService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String deleteBoard(Long boardId, Long memberId) {
 
         // 글 등록 여부 확인

@@ -7,6 +7,7 @@ import com.callbuslab.community.domain.entity.Favorite;
 import com.callbuslab.community.domain.entity.FavoriteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 좋아요 관련 서비스 클래스
@@ -32,6 +33,7 @@ public class FavoriteService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String enableFavorite(Long boardId, Long memberId) {
 
         // 좋아요 눌렀는지 확인

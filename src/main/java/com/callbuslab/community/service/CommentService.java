@@ -7,6 +7,7 @@ import com.callbuslab.community.domain.entity.CommentRepository;
 import com.callbuslab.community.web.dto.CommentWriteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,7 @@ public class CommentService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String registerComment(Long boardId, CommentWriteDto dto, Long memberId) {
 
         // 댓글 등록용 객체생성
@@ -65,6 +67,7 @@ public class CommentService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String updateComment(CommentWriteDto dto, Long commentId, Long memberId) {
 
         // 댓글 등록 여부 확인
@@ -101,6 +104,7 @@ public class CommentService {
      * @param memberId 이용자 id
      * @return 처리 결과 메세지
      */
+    @Transactional
     public String deleteComment(Long commentId, Long memberId) {
 
         // 댓글 등록 여부 확인

@@ -6,6 +6,7 @@ import com.callbuslab.community.domain.entity.Member;
 import com.callbuslab.community.domain.entity.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 구성원 관련 서비스 클래스
@@ -29,6 +30,7 @@ public class MemberService {
      * @param memberId 이용자 id
      * @return 만들어진 표시용 이름
      */
+    @Transactional
     public String getMemberName(Long memberId) {
         // 멤버 습득
         Member member = memberRepository.getById(memberId);
