@@ -63,7 +63,7 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 ***
 ### API 상세
 ##### 게시글 목록 취득
-서비스URL : /api/board/(글 번호) <br>
+서비스URL : /api/board/ <br>
 요청 형식 : GET <br>
 요청 변수 : 없음 <br>
 출력 결과
