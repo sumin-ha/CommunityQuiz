@@ -24,10 +24,23 @@ import java.util.List;
 @RequestMapping("api/board")
 public class BoardApiController {
 
+    /** 글 서비스 */
     private final BoardService boardService;
+    /** 구성원 서비스 */
     private final MemberService memberService;
 
-    // 글 목록 호출
+    /**
+     * 게시글 목록 취득 API
+     *
+     * <p>
+     *     게시판 글 목록을 취득함. <br>
+     *     좋아요 체크 여부 파악을 위해 authorization 정보로 이용자 id를 습득하여 목록 취득.<br>
+     *     임차인, 임대인, 공인중개사, 외부이용자 모두 이용가능.
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @return
+     */
     @GetMapping("/")
     public ResponseEntity boardList(@RequestHeader(required = false) String authorization) {
 
@@ -47,7 +60,19 @@ public class BoardApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 글 본문 호출
+    /**
+     * 게시글 상세 취득 API
+     *
+     * <p>
+     *     요청 받은 글 번호에 해당하는 글 상세를 습득하는 API<br>
+     *     좋아요 체크 여부 파악을 위해 authorization 정보로 이용자 id를 습득하여 목록 취득.<br>
+     *     임차인, 임대인, 공인중개사, 외부이용자 모두 이용가능.
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param boardId 글 id
+     * @return
+     */
     @GetMapping("/{boardId}")
     public ResponseEntity boardDetail(@RequestHeader(required = false) String authorization,
                                       @PathVariable Long boardId) {
@@ -68,7 +93,18 @@ public class BoardApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 글 등록
+    /**
+     * 게시글 등록
+     *
+     * <p>
+     *    게시글 등록하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param dto 등록 할 글 내용
+     * @return
+     */
     @PostMapping("/")
     public ResponseEntity boardRegister(@RequestHeader String authorization, @RequestBody BoardWriteDto dto) {
 
@@ -85,7 +121,7 @@ public class BoardApiController {
             message = ResponseMessage.memberNotFoundError;
         } else {
             // 등록 처리
-            message = boardService.registerBoard (dto, memberId);
+            message = boardService.registerBoard(dto, memberId);
         }
 
         // 반환 객체 생성
@@ -95,7 +131,19 @@ public class BoardApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 글 수정
+    /**
+     * 게시글 수정
+     *
+     * <p>
+     *    게시글 수정하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param boardId 수정 대상 글 id
+     * @param dto
+     * @return
+     */
     @PutMapping("/{boardId}")
     public ResponseEntity boardUpdate(@RequestHeader String authorization,
                                       @PathVariable Long boardId,
@@ -124,7 +172,18 @@ public class BoardApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 글 삭제
+    /**
+     * 게시글 삭제
+     *
+     * <p>
+     *    게시글 삭제하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param boardId 삭제 대상 글 id
+     * @return
+     */
     @DeleteMapping("/{boardId}")
     public ResponseEntity boardDelete(@RequestHeader String authorization, @PathVariable Long boardId) {
 

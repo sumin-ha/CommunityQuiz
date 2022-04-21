@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public class ResultObject {
 
+    // HttpStatus
     private HttpStatus status;
+    // 응답 메세지
     private String message;
+    // 응답 객체
     private Object data;
 
     @Builder

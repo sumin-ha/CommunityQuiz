@@ -6,7 +6,7 @@ package com.callbuslab.community.constraint;
 public enum MemberCategory {
 
     LESSOR("임대인"),
-    REALTOR("공인 중개사"),
+    REALTOR("공인중개사"),
     LESSEE("임차인"),
     OTHER("외부 사용자");
 

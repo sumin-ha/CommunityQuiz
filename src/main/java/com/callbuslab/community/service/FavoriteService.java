@@ -15,10 +15,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class FavoriteService {
 
+    /** 좋아요 레포지토리 */
     private final FavoriteRepository favoriteRepository;
+    /** 글 레포지토리 */
     private final BoardRepository boardRepository;
 
-    // 좋아요 누르기
+    /**
+     * 좋아요 누르기
+     *
+     * <p>
+     *     좋아요 신규 등록.<br>
+     *     이미 좋아요를 누른 상태라면 해당 메시지를 반환
+     * </p>
+     *
+     * @param boardId 대상 글 id
+     * @param memberId 이용자 id
+     * @return 처리 결과 메세지
+     */
     public String enableFavorite(Long boardId, Long memberId) {
 
         // 좋아요 눌렀는지 확인

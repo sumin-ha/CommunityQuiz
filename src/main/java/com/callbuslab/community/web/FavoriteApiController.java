@@ -17,10 +17,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/favorite")
 public class FavoriteApiController {
 
+    /** 좋아요 서비스 */
     private final FavoriteService favoriteService;
+    /** 구성원 서비스 */
     private final MemberService memberService;
 
-    // 글 좋아요 누르기
+    /**
+     * 좋아요 누르기 API
+     *
+     * <p>
+     *     좋아요 누르는 처리를 하는 API<br>
+     *     좋아요는 1인이 글 하나에 1회만 가능함.
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param boardId 좋아요 대상 글 id
+     * @return
+     */
     @GetMapping("/{boardId}")
     public ResponseEntity favoriteEnable(@RequestHeader String authorization, @PathVariable Long boardId) {
 

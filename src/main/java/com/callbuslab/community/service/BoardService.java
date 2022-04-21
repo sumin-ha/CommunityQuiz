@@ -23,13 +23,26 @@ import java.util.stream.Collectors;
 @Service
 public class BoardService {
 
+    /** 글 레포지토리 */
     private final BoardRepository boardRepository;
+    /** 댓글 레포지토리 */
     private final CommentRepository commentRepository;
+    /** 좋아요 레포지토리 */
     private final FavoriteRepository favoriteRepository;
-
+    /** 구성원 서비스 */
     private final MemberService memberService;
 
-    // 게시판 목록 불러오는 메서드
+    /**
+     * 커뮤니티 게시글 목록 불러오기
+     *
+     * <p>
+     *     게시판은 임대인, 임차인, 공인중개사, 외부이용자 모두 이용가능합니다.<br>
+     *     글id, 제목, 글쓴이, 좋아요 여부, 좋아요 수를 확인 할 수 있습니다.
+     * </p>
+     *
+     * @param memberId 이용자 id
+     * @return 게시글 목록
+     */
     public List<BoardListDto> getBoardList(Long memberId) {
 
         // 등록된 게시글 리스트 습득
@@ -65,10 +78,21 @@ public class BoardService {
         return resultList;
     }
 
-    // 게시글 상세를 불러오는 메서드
+    /**
+     * 게시글 상세 습득
+     *
+     * <p>
+     *     글 id와 이용자 id를 이용해 글 상세 내용을 습득합니다.<br>
+     *     글id, 글제목, 글내용, 작성자, 좋아요수, 삭제시간, 삭제여부를 확인 할 수 있습니다.<br>
+     *
+     * </p>
+     * @param boardId 글 id
+     * @param memberId 이용자 id
+     * @return 글 id에 해당하는 게시글의 상세
+     */
     public BoardDto getBoard(Long boardId, Long memberId) {
 
-        // 등록된 게시글 습득
+        // 등록된 게시글
         Board board = boardRepository.getById(boardId);
 
         // 좋아요 여부를 확인하기 위한 좋아요 테이블 탐색
@@ -79,7 +103,7 @@ public class BoardService {
             favoriteFlag = true;
         }
 
-        // 글쓴이명 취득
+        // 글쓴이명
         String writer = memberService.getMemberName(board.getWriterId());
 
         // 좋아요 체크한 사람의 리스트
@@ -117,7 +141,17 @@ public class BoardService {
         return boardDto;
     }
 
-    // 게시판의 글을 올리는 메서드
+    /**
+     * 게시글 등록
+     *
+     * <p>
+     *     게시글 신규 등록
+     * </p>
+     *
+     * @param dto 등록할 글 내용
+     * @param memberId 이용자 id
+     * @return 처리 결과 메세지
+     */
     public String registerBoard(BoardWriteDto dto, Long memberId) {
 
         Board board = Board.builder().title(dto.getTitle())
@@ -137,7 +171,18 @@ public class BoardService {
         }
     }
 
-    // 게시판의 글을 수정하는 메서드
+    /**
+     * 게시글 수정
+     *
+     * <p>
+     *     게시글 수정<br>
+     *     존재하지 않는 글 id거나 해당 글의 글쓴이가 아니라면 에러
+     * </p>
+     * @param dto 수정 할 내용
+     * @param boardId 수정 대상 글 id
+     * @param memberId 이용자 id
+     * @return 처리 결과 메세지
+     */
     public String updateBoard(BoardWriteDto dto, Long boardId, Long memberId) {
 
         // 글 등록 여부 확인
@@ -162,11 +207,22 @@ public class BoardService {
         }
     }
 
-    // 게시판의 글을 삭제하는 메서드
-    public String deleteBoard(Long id, Long memberId) {
+    /**
+     * 게시글 삭제
+     *
+     * <p>
+     *     게시글 삭제<br>
+     *     존재하지 않는 글 id거나 해당 글의 글쓴이가 아니라면 에러
+     * </p>
+     *
+     * @param boardId 삭제 대상 글 id
+     * @param memberId 이용자 id
+     * @return 처리 결과 메세지
+     */
+    public String deleteBoard(Long boardId, Long memberId) {
 
         // 글 등록 여부 확인
-        Board targetEntity = boardRepository.getById(id);
+        Board targetEntity = boardRepository.getById(boardId);
 
         // 글 id로 습득이 되지 않거나, 해당 유저가 쓴 글이 아닐 경우 에러
         if(targetEntity == null || targetEntity.getWriterId() != memberId) {
@@ -188,7 +244,16 @@ public class BoardService {
         }
     }
 
-    // LocalDateTime 형식을 String으로 변환
+    /**
+     * LocalDateTime 형식을 String으로 변환
+     *
+     * <p>
+     *     yyyy-MM-dd HH:mm:ss 형식으로 변환
+     * </p>
+     *
+     * @param time 변환 대상 시간
+     * @return 변환 후 시간
+     */
     private String LocalDateTimeToString(LocalDateTime time) {
         if(time == null) {
             return null;

@@ -14,10 +14,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
 
+    /** 구성원 레포지토리 */
     private final MemberRepository memberRepository;
 
-    // 화면상에 표시할 멤버 이름 습득하는 메서드
-    // 이름의 형식은 닉네임(계정타입의 한글명)
+    /**
+     * 표시용 멤버 이름 구하기
+     *
+     * <p>
+     *     화면상에 표시할 멤버의 이름 만들기<br>
+     *     이름의 형식은 닉네임(계정타입의 한글명)<br>
+     *     ex) 철수(공인중개사)
+     * </p>
+     *
+     * @param memberId 이용자 id
+     * @return 만들어진 표시용 이름
+     */
     public String getMemberName(Long memberId) {
         // 멤버 습득
         Member member = memberRepository.getById(memberId);
@@ -41,9 +52,19 @@ public class MemberService {
         return memberName.toString();
     }
 
-    // 닉네임 등록
-    // 커뮤니티용 멤버 테이블에 등록.
-    // 커뮤니티의 회원테이블에는 에는 임대인, 임차인, 공인중계사만 등록 가능함.
+    /**
+     * 닉네임 등록
+     *
+     * <p>
+     *     커뮤니티에 처음 왔을 때, 활동하기 위한 닉네임을 등록하는 메뉴<br>
+     *     기존 회원이 커뮤니티를 이용하기 위한 처리<br>
+     *     커뮤니티의 회원테이블에는 에는 임대인, 임차인, 공인중계사만 등록 가능함.
+     * </p>
+     *
+     * @param nickName 등록 할 닉네임
+     * @param token 권한 정보
+     * @return 처리 결과 메세지
+     */
     public String registerNickName(String nickName, String token) {
 
         // 전송받은 Authorization을 해석
@@ -70,8 +91,18 @@ public class MemberService {
         return ResponseMessage.successMessage;
     }
 
-    // Authorization으로 멤버 ID 찾기
-    // 닉네임 등록이 끝난 멤버의 ID를 찾음.
+    /**
+     * 이용자 ID 구하기
+     *
+     * <p>
+     *     처리에 이용할 이용자 ID를 구함.<br>
+     *     전송 받은 httpHeader의 Authorization으로 닉네임 등록 한 이용자의 id를 반환<br>
+     *     닉네임을 등록하지 않았거나, 외부 사용자일 경우에는 이용자 id를 반환하지 않음.<br>     *
+     * </p>
+     *
+     * @param token 권한 정보
+     * @return 이용자 id
+     */
     public Long getMemberId(String token) {
 
         // 전송받은 Authorization을 이용해 체크

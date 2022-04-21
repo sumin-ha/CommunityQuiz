@@ -20,10 +20,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/comment")
 public class CommentApiController {
 
+    /** 댓글 서비스 */
     private final CommentService commentService;
+    /** 구성원 서비스 */
     private final MemberService memberService;
 
-    // 댓글 쓰기
+    /**
+     * 댓글 등록
+     *
+     * <p>
+     *    댓글 등록하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param boardId 댓글 등록 대상 글 id
+     * @param dto 댓글 내용
+     * @return
+     */
     @PostMapping("/{boardId}")
     public ResponseEntity commentRegister(@RequestHeader String authorization,
                                           @PathVariable Long boardId,
@@ -52,7 +66,19 @@ public class CommentApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 댓글 수정
+    /**
+     * 댓글 수정
+     *
+     * <p>
+     *    댓글 수정하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param commentId 수정 대상 댓글 id
+     * @param dto 수정 댓글 내용
+     * @return
+     */
     @PutMapping("/{commentId}")
     public ResponseEntity commentUpdate(@RequestHeader String authorization,
                                         @PathVariable Long commentId,
@@ -81,7 +107,18 @@ public class CommentApiController {
         return ResponseEntity.ok().headers(headers).body(resultObject);
     }
 
-    // 댓글 삭제
+    /**
+     * 댓글 삭제
+     *
+     * <p>
+     *    댓글 삭제하는 API<br>
+     *    임대인, 임차인, 공인중개사만 이용가능
+     * </p>
+     *
+     * @param authorization HttpHeader authorization 정보
+     * @param commentId 삭제 대상 댓글 id
+     * @return
+     */
     @DeleteMapping("/{commentId}")
     public ResponseEntity commentDelete(@RequestHeader String authorization, @PathVariable Long commentId) {
 

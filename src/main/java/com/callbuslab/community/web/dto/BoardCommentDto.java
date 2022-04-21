@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardCommentDto {
 
+    // 댓글 id
     private Long commentId;
+    // 댓글 쓴 사람 닉네임
     private String commentWriter;
+    // 댓글 내용
     private String content;
 
     @Builder
