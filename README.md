@@ -68,7 +68,7 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
   "status": Http 응답코드,
   "message": 응답 메세지,
@@ -89,7 +89,7 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
   "status": Http 응답코드,
   "message": 응답 메세지,
@@ -117,15 +117,15 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 서비스URL : /api/board/ <br>
 요청 형식 : POST <br>
 요청 변수
-```json
+```yaml
 {
-  "title" : "글 제목",
-  "content" : "글 내용";
+  "title" : "글 제목" (문자열)
+  "content" : "글 내용" (문자열)
 }
 ```
 출력 결과
 
-```json
+```yaml
 {
   "status": Http 응답코드,
   "message": 응답 메세지,
@@ -137,18 +137,18 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 서비스URL : /api/board/댓글 번호 <br>
 요청 형식 : PUT <br>
 요청 변수
-```json
+```yaml
 {
-  "title" : "글 제목",
-  "content" : "글 내용";
+  "title" : "글 제목" (문자열)
+  "content" : "글 내용" (문자열)
 }
 ```
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -159,10 +159,10 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -171,17 +171,17 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 서비스URL : /api/comment/글 번호 <br>
 요청 형식 : POST <br>
 요청 변수
-```json
+```yaml
 {
-  "content" : "댓글 내용";
+  "content" : "댓글 내용" (문자열)
 }
 ```
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -190,17 +190,17 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 서비스URL : /api/comment/댓글 번호 <br>
 요청 형식 : PUT <br>
 요청 변수
-```json
+```yaml
 {
-  "content" : "댓글 내용";
+  "content" : "댓글 내용" (문자열)
 }
 ```
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -211,10 +211,10 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -225,10 +225,10 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
@@ -239,10 +239,10 @@ HttpHeader의 authorization를 이용해도 사용자 구분은 가능하지만,
 요청 변수 : 없음 <br>
 출력 결과
 
-```json
+```yaml
 {
-  "status": Http 응답코드,
-  "message": 응답 메세지,
+  "status": Http 응답코드
+  "message": 응답 메세지
   "data": null
 }
 ```
